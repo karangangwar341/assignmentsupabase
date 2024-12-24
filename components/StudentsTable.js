@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchStudents, addStudent } from '../redux/features/studentsSlice';
-
+import { MdAdd } from "react-icons/md";
+import { formatDate ,  formatDateTime} from '@/utils/dateFormat';
 export default function StudentsTable() {
   const dispatch = useDispatch();
   const students = useSelector((state) => state.students.students); // Access students from Redux state
@@ -16,6 +17,7 @@ export default function StudentsTable() {
   const handleAddStudent = async (newStudent) => {
     await dispatch(addStudent(newStudent)); // Dispatch the action to add a student
     setShowModal(false); // Close the modal after adding the student
+    console.log(students);
   };
 
   return (
@@ -26,34 +28,35 @@ export default function StudentsTable() {
           <select
             value={selectedAY}
             onChange={(e) => setSelectedAY(e.target.value)}
-            className="px-4 py-2 border rounded bg-gray-200"
+            className="px-4 py-2 border rounded bg-gray-200 w-[160px]"
+            class="custom-select"
           >
-            <option value="AY 2024-25">AY 2024-25</option>
+            <option value="AY 2024-25">AY 2024-25 </option>
             <option value="AY 2023-24">AY 2023-24</option>
           </select>
           <select
             value={selectedCourse}
             onChange={(e) => setSelectedCourse(e.target.value)}
-            className="px-4 py-2 border rounded bg-gray-200"
+            className="px-4 py-2 border rounded bg-gray-200 w-[120px]"
           >
             <option value="CBSE 9">CBSE 9</option>
             <option value="CBSE 10">CBSE 10</option>
           </select>
         </div>
         <button
-          className="px-4 py-2  text-white rounded"
+          className="px-4 py-2  bg-gray-200 rounded flex row items-center gap-2"
           onClick={() => setShowModal(true)}
         >
-          + Add new Student
+         <MdAdd className='text-xl'/> Add new Student
         </button>
       </div>
 
       {/* Table */}
-      <div className="bg-white shadow-md rounded-lg">
+      <div className="bg-white text-black text-[0.8em] shadow-md rounded-lg">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="bg-gray-100 border-b">
-              <th className="py-3 px-4">Student Name</th>
+            <tr className="bg-gray-100 border-b text-black text-[0.9em]">
+              <th className="py-3 px-4 ">Student Name</th>
               <th className="py-3 px-4">Cohort</th>
               <th className="py-3 px-4">Courses</th>
               <th className="py-3 px-4">Date Joined</th>
@@ -80,8 +83,9 @@ export default function StudentsTable() {
                       <span>CBSE 9 Science</span>
                     </div>
                   </td>
-                  <td className="py-3 px-4">{new Date(student.date_joined).toLocaleDateString()}</td>
-                  <td className="py-3 px-4">{new Date(student.last_login).toLocaleString()}</td>
+                  {/* <td className="py-3 px-4">{new Date(student.date_joined).toLocaleDateString()}</td> */}
+                  <td className="py-3 px-4">{formatDate(student.date_joined)}</td>
+                  <td className="py-3 px-4">{formatDateTime(student.last_login)}</td>
                   <td className="py-3 px-4">
                     <span
                       className={`w-3 h-3 inline-block rounded-full ${

@@ -6,8 +6,7 @@ export const fetchStudents = createAsyncThunk('students/fetchStudents', async ()
   const response = await fetch('/api/students',{
     method: 'GET'
   });
-  console.log("hi2");
-  console.log(response);
+  console.log(response.json);
   return response.json();
 });
 
