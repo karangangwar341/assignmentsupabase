@@ -2,37 +2,69 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchStudents, addStudent } from '../redux/features/studentsSlice';
 import { MdAdd } from "react-icons/md";
-import { formatDate ,  formatDateTime} from '@/utils/dateFormat';
+import { formatDate, formatDateTime } from '@/utils/dateFormat';
+
+
 export default function StudentsTable() {
   const dispatch = useDispatch();
   const students = useSelector((state) => state.students.students); // Access students from Redux state
   const [showModal, setShowModal] = useState(false);
   const [selectedAY, setSelectedAY] = useState("AY 2024-25");
   const [selectedCourse, setSelectedCourse] = useState("CBSE 9");
+  const [filteredStudents, setFilteredStudents] = useState([]);
+  const [cohorts, setCohorts] = useState([]);
+  const [selectedCohort, setSelectedCohort] = useState('AY 2024-25');
+
+  useEffect(() => {
+    const fetchCohorts = async () => {
+      const response = await fetch('/api/cohorts');
+      const data = await response.json();
+      setCohorts(data);
+    };
+    fetchCohorts();
+  }, []);
+
 
   useEffect(() => {
     dispatch(fetchStudents()); // Fetch students when the component loads
   }, [dispatch]);
+
+  useEffect(() => {
+    let filtered = students;
+
+    if (selectedCohort) {
+      filtered = filtered.filter(
+        (student) => student.cohorts?.name === selectedCohort
+      );
+    }
+
+    setFilteredStudents(filtered);
+  }, [selectedCohort, students]);
 
   const handleAddStudent = async (newStudent) => {
     await dispatch(addStudent(newStudent)); // Dispatch the action to add a student
     setShowModal(false); // Close the modal after adding the student
     console.log(students);
   };
-
+  console.log("filtered students are",filteredStudents);
   return (
     <div>
       {/* Filters and Add Button */}
       <div className="flex justify-between text-[#3f526e] font-semibold items-center mb-4">
         <div className="flex space-x-4">
+         
+         
           <select
-            value={selectedAY}
-            onChange={(e) => setSelectedAY(e.target.value)}
-            className="px-4 py-2 border rounded bg-gray-200 w-[160px]"
-            class="custom-select"
+            value={selectedCohort}
+            onChange={(e) => setSelectedCohort(e.target.value)}
+            className="px-4 py-2 border rounded bg-gray-200 w-full"
           >
-            <option value="AY 2024-25">AY 2024-25 </option>
-            <option value="AY 2023-24">AY 2023-24</option>
+            <option value={selectedCohort}>{selectedCohort}</option>
+            {cohorts.map((cohort) => (
+        <option key={cohort.id} value={cohort.name}>
+          {cohort.name}
+        </option>
+      ))}
           </select>
           <select
             value={selectedCourse}
@@ -44,12 +76,13 @@ export default function StudentsTable() {
           </select>
         </div>
         <button
-          className="px-4 py-2  bg-gray-200 rounded flex row items-center gap-2"
+          className="px-4 py-2 bg-gray-200 rounded flex row items-center gap-2"
           onClick={() => setShowModal(true)}
         >
-         <MdAdd className='text-xl'/> Add new Student
+          <MdAdd className="text-xl" /> Add new Student
         </button>
       </div>
+
 
       {/* Table */}
       <div className="bg-white text-black text-[0.8em] shadow-md rounded-lg">
@@ -65,8 +98,8 @@ export default function StudentsTable() {
             </tr>
           </thead>
           <tbody>
-            {students.length > 0 ? (
-              students.map((student) => (
+            {filteredStudents.length > 0 ? (
+              filteredStudents.map((student) => (
                 <tr key={student.id} className="border-b hover:bg-gray-50">
                   <td className="py-3 px-4 flex items-center space-x-2">
                     <img
@@ -76,7 +109,9 @@ export default function StudentsTable() {
                     />
                     <span>{student.name}</span>
                   </td>
-                  <td className="py-3 px-4">{student.cohort_id}</td>
+                  <td className="border px-4 py-2">
+                {student.cohorts?.name || 'Unknown'}
+              </td>
                   <td className="py-3 px-4">
                     <div className="flex items-center space-x-2">
                       <img src="/icons/science-icon.png" alt="Icon" className="w-6 h-6" />
