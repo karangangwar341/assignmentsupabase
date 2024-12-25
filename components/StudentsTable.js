@@ -69,7 +69,7 @@ export default function StudentsTable() {
           <select
             value={selectedCourse}
             onChange={(e) => setSelectedCourse(e.target.value)}
-            className="px-4 py-2 border rounded bg-gray-200 w-[120px]"
+            className="px-4 py-2 border rounded bg-gray-200 w-[200px]"
           >
             <option value="CBSE 9">CBSE 9</option>
             <option value="CBSE 10">CBSE 10</option>

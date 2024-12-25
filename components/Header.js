@@ -2,7 +2,7 @@ export default function Header() {
   return (
     <header className=" text-black container gap-20 bg-gray-100 flex justify-between items- p-4">
       {/* Search Input */}
-      <div className="flex items-center  w-full">
+      <div className="flex items-center  lg:w-[640px]">
         <input
           type="text"
           placeholder="Search your course"
@@ -11,7 +11,7 @@ export default function Header() {
       </div>
 
       {/* Icons and Profile */}
-      <div className="flex items-center w-[640px] space-x-6">
+      <div className="flex items-center w-auto space-x-6">
         <button>
           <svg
             xmlns="http://www.w3.org/2000/svg"
