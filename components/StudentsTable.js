@@ -103,7 +103,7 @@ export default function StudentsTable() {
                 <tr key={student.id} className="border-b hover:bg-gray-50">
                   <td className="py-3 px-4 flex items-center space-x-2">
                     <img
-                      src="/placeholder-avatar.png"
+                      src="/student.png"
                       alt="Avatar"
                       className="w-8 h-8 rounded-full"
                     />
@@ -114,7 +114,7 @@ export default function StudentsTable() {
               </td>
                   <td className="py-3 px-4">
                     <div className="flex items-center space-x-2">
-                      <img src="/icons/science-icon.png" alt="Icon" className="w-6 h-6" />
+                      <img src="/courses.png" alt="Icon" className="w-6 h-6 rounded-md" />
                       <span>CBSE 9 Science</span>
                     </div>
                   </td>
@@ -124,7 +124,8 @@ export default function StudentsTable() {
                   <td className="py-3 px-4">
                     <span
                       className={`w-3 h-3 inline-block rounded-full ${
-                        student.status === "active" ? "bg-green-500" : "bg-red-500"
+                        student.status ? "bg-green-500" : "bg-red-500"
+
                       }`}
                     ></span>
                   </td>
