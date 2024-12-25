@@ -4,9 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "postinstall": "prisma generate",
-    "vercel-build": "prisma generate && prisma migrate deploy && next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -23,9 +21,8 @@
     "react-redux": "^9.2.0"
   },
   "devDependencies": {
-    "prisma": "^6.1.0",
-    "@eslint/eslintrc": "^3.0.0",
-    "eslint": "^9.0.0",
+    "@eslint/eslintrc": "^3",
+    "eslint": "^9",
     "eslint-config-next": "15.1.2",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17"
